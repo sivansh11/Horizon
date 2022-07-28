@@ -1,0 +1,22 @@
+#ifndef APP_H
+#define APP_H
+
+#include "horizon_window.h"
+#include "gfx/core/horizon_device.h"
+#include "gfx/core/horizon_renderer.h"
+
+class App {
+public:
+    App() = default;
+    
+    static App* init();
+    static void shutdown(App *application);
+    void run();
+
+private:
+    horizon::Window window{800, 600, "Horizon"};
+    horizon::gfx::Device device{window};
+    horizon::gfx::Renderer renderer{window, device};
+};
+
+#endif
