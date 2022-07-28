@@ -32,7 +32,7 @@ public:
 
         pipelineConfig.renderPass = renderPass;
         pipelineConfig.pipelineLayout = mPipelineLayout;
-        mPipeline = std::make_unique<Pipeline>(mDevice, "../shaders/example_triangle.vert.spv", "../shaders/example_triangle.frag.spv", pipelineConfig);
+        mPipeline = std::make_unique<Pipeline>(mDevice, "shaders/example_triangle.vert.spv", "shaders/example_triangle.frag.spv", pipelineConfig);
 
     }
     ~TestTriangle() {
