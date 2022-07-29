@@ -1,6 +1,10 @@
 import os
+import platform
 
-shader_compiler = 'C:\\programming\\shaderc\\bin\\glslc'
+if platform.system() == 'Windows':
+    shader_compiler = 'C:\\programming\\shaderc\\bin\\glslc'
+if platform.system() == 'Linux':
+    shader_compiler = 'glslc'
 
 if not os.path.exists("build"):
     print("Please run cmake!")
