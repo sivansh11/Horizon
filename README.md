@@ -5,6 +5,7 @@
 download vulkan sdk from
 https://www.lunarg.com/vulkan-sdk/
 
+NOTE: you need the vulkan sdk inorder to run this program
 
 ## Build instructions
 in root dir 
