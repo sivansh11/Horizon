@@ -1,5 +1,5 @@
-#ifndef GFX_CORE_HORIZON_RENDERER_H
-#define GFX_CORE_HORIZON_RENDERER_H
+#ifndef GFX_HORIZON_RENDERER_H
+#define GFX_HORIZON_RENDERER_H
 
 #include "debug.h"
 

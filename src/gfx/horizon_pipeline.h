@@ -1,5 +1,5 @@
-#ifndef GFX_CORE_HORIZON_PIPELINE_H
-#define GFX_CORE_HORIZON_PIPELINE_H
+#ifndef GFX_HORIZON_PIPELINE_H
+#define GFX_HORIZON_PIPELINE_H
 
 #include "gfx/horizon_device.h"
 

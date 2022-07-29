@@ -1,5 +1,5 @@
-#ifndef GFX_CORE_HORIZON_SWAPCHAIN_H
-#define GFX_CORE_HORIZON_SWAPCHAIN_H
+#ifndef GFX_HORIZON_SWAPCHAIN_H
+#define GFX_HORIZON_SWAPCHAIN_H
 
 #include "gfx/horizon_device.h"
 

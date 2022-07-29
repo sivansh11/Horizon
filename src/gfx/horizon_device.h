@@ -1,5 +1,5 @@
-#ifndef GFX_CORE_HORIZON_DEVICE_H
-#define GFX_CORE_HORIZON_DEVICE_H
+#ifndef GFX_HORIZON_DEVICE_H
+#define GFX_HORIZON_DEVICE_H
 
 #include "horizon_window.h"
 

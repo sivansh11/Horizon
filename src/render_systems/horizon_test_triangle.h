@@ -1,5 +1,5 @@
-#ifndef GFX_RENDER_SYSTEMS_HORIZON_TEST_TRIANGLE_H
-#define GFX_RENDER_SYSTEMS_HORIZON_TEST_TRIANGLE_H
+#ifndef RENDER_SYSTEMS_HORIZON_TEST_TRIANGLE_H
+#define RENDER_SYSTEMS_HORIZON_TEST_TRIANGLE_H
 
 #include "gfx/horizon_device.h"
 #include "gfx/horizon_pipeline.h"
@@ -9,8 +9,6 @@
 #include <glm/glm.hpp>
 
 namespace horizon {
-
-namespace gfx {
 
 struct Vertex {
     glm::vec2 pos;
@@ -25,7 +23,7 @@ const std::vector<Vertex> vertices = {
 
 class TestTriangle {
 public:
-    TestTriangle(Device &deviceRef, VkRenderPass renderPass) 
+    TestTriangle(gfx::Device &deviceRef, VkRenderPass renderPass) 
                 : mDevice(deviceRef), 
                   vertexBuffer(mDevice, 
                                sizeof(Vertex) * vertices.size(), 
@@ -51,12 +49,12 @@ public:
         vertexInputAttributeDescriptions.push_back({0, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, pos)});
         vertexInputAttributeDescriptions.push_back({1, 0, VK_FORMAT_R32G32B32_SFLOAT, offsetof(Vertex, color)});
 
-        PipelineConfigInfo pipelineConfig{};
-        Pipeline::defaultPipelineConfigInfo(pipelineConfig, vertexInputBindingDescription, vertexInputAttributeDescriptions);
+        gfx::PipelineConfigInfo pipelineConfig{};
+        gfx::Pipeline::defaultPipelineConfigInfo(pipelineConfig, vertexInputBindingDescription, vertexInputAttributeDescriptions);
 
         pipelineConfig.renderPass = renderPass;
         pipelineConfig.pipelineLayout = mPipelineLayout;
-        mPipeline = std::make_unique<Pipeline>(mDevice, "shaders/example_triangle.vert.spv", "shaders/example_triangle.frag.spv", pipelineConfig);
+        mPipeline = std::make_unique<gfx::Pipeline>(mDevice, "shaders/example_triangle.vert.spv", "shaders/example_triangle.frag.spv", pipelineConfig);
 
         vertexBuffer.map();
         vertexBuffer.writeToMappedBuffer((void*)vertices.data());
@@ -78,14 +76,12 @@ public:
     }
 
 private:
-    Device& mDevice;
-    std::unique_ptr<Pipeline> mPipeline{};
+    gfx::Device& mDevice;
+    std::unique_ptr<gfx::Pipeline> mPipeline{};
     VkPipelineLayout mPipelineLayout{};
 
-    Buffer vertexBuffer;
+    gfx::Buffer vertexBuffer;
 };
-
-} // namespace gfx
 
 } // namespace horizon
 

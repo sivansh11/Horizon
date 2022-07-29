@@ -13,7 +13,7 @@ void App::shutdown(App *application) {
 }
 
 void App::run() {
-    horizon::gfx::TestTriangle test{device, renderer.getSwapChainRenderPass()};
+    horizon::TestTriangle test{device, renderer.getSwapChainRenderPass()};
 
     while (!window.shouldClose()) {
         window.pollEvents();
