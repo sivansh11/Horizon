@@ -13,8 +13,6 @@ void App::shutdown(App *application) {
     delete application;
 }
 
-struct ubo { int i; };
-
 void App::run() {
     horizon::gfx::TestTriangle test{device, renderer.getSwapChainRenderPass()};
 
