@@ -4,8 +4,8 @@
 #include "debug.h"
 
 #include "horizon_window.h"
-#include "gfx/core/horizon_device.h"
-#include "gfx/core/horizon_swapchain.h"
+#include "gfx/horizon_device.h"
+#include "gfx/horizon_swapchain.h"
 
 #include <memory>
 

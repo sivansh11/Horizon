@@ -1,4 +1,4 @@
-#include "gfx/core/horizon_pipeline.h"
+#include "gfx/horizon_pipeline.h"
 
 #include "debug.h"
 

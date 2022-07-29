@@ -1,9 +1,9 @@
 #ifndef GFX_RENDER_SYSTEMS_HORIZON_TEST_TRIANGLE_H
 #define GFX_RENDER_SYSTEMS_HORIZON_TEST_TRIANGLE_H
 
-#include "gfx/core/horizon_device.h"
-#include "gfx/core/horizon_pipeline.h"
-#include "gfx/core/horizon_buffer.h"
+#include "gfx/horizon_device.h"
+#include "gfx/horizon_pipeline.h"
+#include "gfx/horizon_buffer.h"
 
 #include <memory>
 #include <glm/glm.hpp>

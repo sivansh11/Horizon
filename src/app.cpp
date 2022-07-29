@@ -1,7 +1,6 @@
 #include "app.h"
 
-#include "gfx/render_systems/horizon_test_triangle.h"
-#include "gfx/core/horizon_buffer.h"
+#include "render_systems/horizon_test_triangle.h"
 
 App* App::init() {
     App *app = new App();

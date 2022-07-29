@@ -1,4 +1,4 @@
-#include "gfx/core/horizon_device.h"
+#include "gfx/horizon_device.h"
 
 #include "debug.h"
 

@@ -1,4 +1,4 @@
-#include "gfx/core/horizon_renderer.h"
+#include "gfx/horizon_renderer.h"
 
 namespace horizon {
 

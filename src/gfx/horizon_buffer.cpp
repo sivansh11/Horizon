@@ -1,4 +1,4 @@
-#include "gfx/core/horizon_buffer.h"
+#include "gfx/horizon_buffer.h"
 
 #include "debug.h"
 

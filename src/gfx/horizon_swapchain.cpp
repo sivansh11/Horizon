@@ -1,4 +1,4 @@
-#include "gfx/core/horizon_swapchain.h"
+#include "gfx/horizon_swapchain.h"
 
 #include <iostream>
 #include <limits>
