@@ -1,6 +1,7 @@
 #include "app.h"
 
 #include "gfx/render_systems/horizon_test_triangle.h"
+#include "gfx/core/horizon_buffer.h"
 
 App* App::init() {
     App *app = new App();
@@ -12,9 +13,7 @@ void App::shutdown(App *application) {
     delete application;
 }
 
-
 void App::run() {
-    
     horizon::gfx::TestTriangle test{device, renderer.getSwapChainRenderPass()};
 
     while (!window.shouldClose()) {

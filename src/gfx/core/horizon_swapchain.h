@@ -36,7 +36,7 @@ private:
     void init();
     void createSwapChain();
     void createImageViews();
-    // void createDepthResources();
+    void createDepthResources();
     void createRenderPass();
     void createFramebuffers();
     void createSyncObjects();
@@ -44,6 +44,7 @@ private:
     VkSurfaceFormatKHR chooseSwapSurfaceFormat(std::vector<VkSurfaceFormatKHR> &availableFormats);
     VkPresentModeKHR chooseSwapPresentMode(std::vector<VkPresentModeKHR> &availablePresentModes);
     VkExtent2D chooseSwapExtent(VkSurfaceCapabilitiesKHR &capabilities);
+    VkFormat findDepthFormat();
 
 private:
     Device& mDevice;
@@ -52,7 +53,11 @@ private:
     VkSwapchainKHR mSwapChain{};
     std::vector<VkImage> mSwapChainImages{};
     VkExtent2D mSwapChainExtent{};
+    std::vector<VkImage> mDepthImages{};
+    std::vector<VkDeviceMemory> mDepthImageMemory{};
+    std::vector<VkImageView> mDepthImageViews{};
     VkFormat mSwapChainFormat{};
+    VkFormat mSwapChainDepthFormat{};
     std::vector<VkImageView> mSwapChainImageViews{};
     VkRenderPass mRenderPass{};
     std::vector<VkFramebuffer> mSwapChainFramebuffers{};

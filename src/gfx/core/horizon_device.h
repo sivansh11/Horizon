@@ -27,7 +27,7 @@ public:
     Device(Window &window);
     ~Device();
 
-    VkDevice& getDevice() { return mDevice; }
+    inline VkDevice& getDevice() { return mDevice; }
     SwapChainSupportDetails getSwapChainSupport() { return querySwapChainSupport(mPhysicalDevice); }
     VkSurfaceKHR& getSurface() { return mSurface; }
     QueueFamilyIndices getPhysicalDeviceQueueFamilies() { return findQueueFamilies(mPhysicalDevice); }
@@ -35,9 +35,11 @@ public:
     VkQueue& getGraphicsQueue() { return mGraphicsQueue; }
     VkQueue& getPresentQueue() { return mPresentQueue; }
     void waitIdle() { vkDeviceWaitIdle(mDevice); }
+    VkFormat findSupportFormat(const std::vector<VkFormat> &candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
 
 public:
     VkPhysicalDeviceProperties physicalDeviceProperties{};
+    uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
 
 private:
     void createInstance();

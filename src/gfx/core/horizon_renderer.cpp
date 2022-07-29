@@ -92,6 +92,7 @@ void Renderer::endFrame() {
 void Renderer::beginSwapChainRenderPass(VkCommandBuffer commandBuffer) {
     ASSERT(isFrameStarted, "Cant call beginSwapChainRenderPass if frame is not in progress!");
     ASSERT(commandBuffer == getCurrentCommandBuffer(), "Cant being render pass on a command buffer from a different frame!");
+    
     VkRenderPassBeginInfo renderPassBeginInfo{};
     renderPassBeginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
     renderPassBeginInfo.renderPass = mSwapChain->getRenderPass();
@@ -100,8 +101,11 @@ void Renderer::beginSwapChainRenderPass(VkCommandBuffer commandBuffer) {
     renderPassBeginInfo.renderArea.offset = {0, 0};
     renderPassBeginInfo.renderArea.extent = mSwapChain->getExtent();
 
-    renderPassBeginInfo.clearValueCount = 1;
-    renderPassBeginInfo.pClearValues = &clearValues;
+    VkClearValue clearValues[2];
+    clearValues[0].color = {0.01f, 0.01f, 0.01f, 1.0f};
+    clearValues[1].depthStencil = {1.0f, 0};
+    renderPassBeginInfo.clearValueCount = static_cast<uint32_t>(2);
+    renderPassBeginInfo.pClearValues = clearValues;
 
     vkCmdBeginRenderPass(commandBuffer, &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
 

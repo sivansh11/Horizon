@@ -17,13 +17,35 @@ public:
            VkDeviceSize minOffsetAlignment = 1);
     ~Buffer();
 
-    VkResult map(VkDeviceSize size = VK_WHOLE_SIZE, VkDeviceSize offset = 0);
-    void unMap();
+    void map(VkDeviceSize size = VK_WHOLE_SIZE, VkDeviceSize offset = 0);
+    void unmap();
 
-    
+    void writeToMappedBuffer(void *data, VkDeviceSize size = VK_WHOLE_SIZE, VkDeviceSize = 0);
+    void writeFromMappedBuffer(void *data, VkDeviceSize size = VK_WHOLE_SIZE, VkDeviceSize = 0);
+    void flush(VkDeviceSize size = VK_WHOLE_SIZE, VkDeviceSize offset = 0);
+    void invalidate(VkDeviceSize size = VK_WHOLE_SIZE, VkDeviceSize offset = 0);    
+
+    VkBuffer& getBuffer() { return mBuffer; }
+
+private:    
+    static VkDeviceSize getAlignment(VkDeviceSize instanceSize, VkDeviceSize minOffsetAlignment);
+    void createBuffer(VkDeviceSize size,
+                      VkBufferUsageFlags usage,
+                      VkMemoryPropertyFlags properties);    
 
 private:
-
+    Device& mDevice;
+    
+    void* mMapped{nullptr};
+    VkBuffer mBuffer{};
+    VkDeviceMemory mMemory{};
+    
+    VkDeviceSize mBufferSize{};
+    uint32_t mInstanceCount{};
+    VkDeviceSize mInstanceSize{};
+    VkDeviceSize mAlignmentSize{};
+    VkBufferUsageFlags mUsageFlags{};
+    VkMemoryPropertyFlags mMemoryPropertyFlags{};
 };
 
 } // namespace gfx

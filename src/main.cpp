@@ -9,6 +9,7 @@ int main() {
         application->run();
     } catch(const std::exception& e) {
         std::cerr << e.what() << '\n';
+        ASSERT(false, "check call stack!");
         return EXIT_FAILURE;
     }
     
