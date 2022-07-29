@@ -35,6 +35,7 @@ public:
     VkQueue& getGraphicsQueue() { return mGraphicsQueue; }
     VkQueue& getPresentQueue() { return mPresentQueue; }
     void waitIdle() { vkDeviceWaitIdle(mDevice); }
+    VkFormat findSupportFormat(const std::vector<VkFormat> &candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
 
 public:
     VkPhysicalDeviceProperties physicalDeviceProperties{};
