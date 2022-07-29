@@ -28,4 +28,3 @@ target_link_libraries(horizon
     glm
     ${Vulkan_LIBRARIES}
 )
-

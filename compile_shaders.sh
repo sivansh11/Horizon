@@ -1,1 +1,1 @@
-python3 shadercompiler.py
+pypy shadercompiler.py
