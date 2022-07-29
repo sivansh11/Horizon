@@ -1,6 +1,6 @@
 import os
 
-shader_compiler = 'glslc'
+shader_compiler = 'C:\\programming\\shaderc\\bin\\glslc'
 
 if not os.path.exists("build"):
     print("Please run cmake!")

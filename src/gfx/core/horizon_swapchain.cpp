@@ -57,6 +57,7 @@ VkPresentModeKHR SwapChain::chooseSwapPresentMode(std::vector<VkPresentModeKHR> 
     for (auto &availablePresentMode : availablePresentModes) {
         if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR) {
             std::cout << "Present mode: Mailbox\n"; 
+            return VK_PRESENT_MODE_MAILBOX_KHR;
         }
     }
 
