@@ -36,6 +36,8 @@ public:
     VkQueue& getPresentQueue() { return mPresentQueue; }
     void waitIdle() { vkDeviceWaitIdle(mDevice); }
     VkFormat findSupportFormat(const std::vector<VkFormat> &candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
+    VkCommandBuffer getSingleUseCommandBuffer();
+    void endSingleUseCommandBuffer(VkCommandBuffer commandBuffer);
 
 public:
     VkPhysicalDeviceProperties physicalDeviceProperties{};

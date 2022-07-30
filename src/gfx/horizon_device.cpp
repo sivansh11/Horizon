@@ -354,6 +354,32 @@ VkFormat Device::findSupportFormat(const std::vector<VkFormat> &candidates, VkIm
     throw std::runtime_error("Failed to find support format!");
 }
 
+VkCommandBuffer Device::getSingleUseCommandBuffer() {
+    VkCommandBufferAllocateInfo allocInfo{};
+    allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+    allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+    allocInfo.commandPool = mCommandPool;
+    allocInfo.commandBufferCount = 1;
+    VkCommandBuffer commandBuffer;
+    vkAllocateCommandBuffers(mDevice, &allocInfo, &commandBuffer);
+    VkCommandBufferBeginInfo beginInfo{};
+    beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+    beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+    vkBeginCommandBuffer(commandBuffer, &beginInfo);
+    return commandBuffer;
+}
+
+void Device::endSingleUseCommandBuffer(VkCommandBuffer commandBuffer) {
+    vkEndCommandBuffer(commandBuffer);
+    VkSubmitInfo submitInfo{};
+    submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    submitInfo.commandBufferCount = 1;
+    submitInfo.pCommandBuffers = &commandBuffer;
+    vkQueueSubmit(mGraphicsQueue, 1, &submitInfo, VK_NULL_HANDLE);
+    vkQueueWaitIdle(mGraphicsQueue);
+    vkFreeCommandBuffers(mDevice, mCommandPool, 1, &commandBuffer);
+}
+
 } // namespace gfx
 
 } // namespace horizon

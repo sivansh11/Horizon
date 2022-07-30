@@ -125,6 +125,17 @@ void Buffer::invalidate(VkDeviceSize size, VkDeviceSize offset) {
     } 
 }
 
+void Buffer::copyBuffer(Buffer& srcBuffer, Buffer& dstBuffer, VkDeviceSize size) {
+    Device& device = srcBuffer.mDevice;
+    VkCommandBuffer commandBuffer = device.getSingleUseCommandBuffer();
+    VkBufferCopy copyRegion{};
+    copyRegion.srcOffset = 0;
+    copyRegion.dstOffset = 0;
+    copyRegion.size = size;
+    vkCmdCopyBuffer(commandBuffer, srcBuffer.mBuffer, dstBuffer.mBuffer, 1, &copyRegion);
+    device.endSingleUseCommandBuffer(commandBuffer);
+}
+
 } // namespace gfx
 
 } // namespace horizon

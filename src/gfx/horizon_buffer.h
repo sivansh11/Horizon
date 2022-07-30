@@ -26,6 +26,9 @@ public:
     void invalidate(VkDeviceSize size = VK_WHOLE_SIZE, VkDeviceSize offset = 0);    
 
     VkBuffer& getBuffer() { return mBuffer; }
+    VkDeviceSize getCount() { return mInstanceCount; }
+
+    static void copyBuffer(Buffer& srcBuffer, Buffer& dstBuffer, VkDeviceSize size);
 
 private:    
     static VkDeviceSize getAlignment(VkDeviceSize instanceSize, VkDeviceSize minOffsetAlignment);
