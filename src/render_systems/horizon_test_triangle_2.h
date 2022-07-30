@@ -13,6 +13,10 @@ std::vector<Vertex> vertices {
     {{0, -.5, 0}, {0, 0, 1.0}, {0, 0, 0}, {0, 0}}
 };
 
+std::vector<uint32_t> indices {
+    0, 1, 2
+};
+
 class TestTriangle2 {
 public:
     TestTriangle2(gfx::Device& deviceRef, VkRenderPass renderPass) : mDevice(deviceRef) {
@@ -41,7 +45,7 @@ public:
 
         mesh = new Mesh(mDevice,
                         &vertices,
-                        nullptr);
+                        &indices);
     }
     ~TestTriangle2() {
         delete mesh;
