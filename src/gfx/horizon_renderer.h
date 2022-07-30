@@ -1,9 +1,9 @@
 #ifndef GFX_HORIZON_RENDERER_H
 #define GFX_HORIZON_RENDERER_H
 
-#include "debug.h"
+#include "core/debug.h"
 
-#include "horizon_window.h"
+#include "core/horizon_window.h"
 #include "gfx/horizon_device.h"
 #include "gfx/horizon_swapchain.h"
 

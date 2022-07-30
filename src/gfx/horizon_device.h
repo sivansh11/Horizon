@@ -1,7 +1,7 @@
 #ifndef GFX_HORIZON_DEVICE_H
 #define GFX_HORIZON_DEVICE_H
 
-#include "horizon_window.h"
+#include "core/horizon_window.h"
 
 #include <vector>
 

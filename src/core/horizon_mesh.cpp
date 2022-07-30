@@ -1,6 +1,6 @@
 #include "horizon_mesh.h"
 
-#include "debug.h"
+#include "core/debug.h"
 
 namespace horizon {
 

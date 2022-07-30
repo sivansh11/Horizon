@@ -1,6 +1,6 @@
 #include "horizon_window.h"
 
-#include "debug.h"
+#include "core/debug.h"
 
 namespace horizon {
 

@@ -1,6 +1,6 @@
 #include "gfx/horizon_pipeline.h"
 
-#include "debug.h"
+#include "core/debug.h"
 
 #include "utils/horizon_helper.h"
 

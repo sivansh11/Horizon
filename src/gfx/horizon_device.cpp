@@ -1,6 +1,6 @@
 #include "gfx/horizon_device.h"
 
-#include "debug.h"
+#include "core/debug.h"
 
 #include <cstring>
 #include <set>

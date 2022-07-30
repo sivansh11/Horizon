@@ -1,7 +1,7 @@
 #ifndef APP_H
 #define APP_H
 
-#include "horizon_window.h"
+#include "core/horizon_window.h"
 #include "gfx/horizon_device.h"
 #include "gfx/horizon_renderer.h"
 

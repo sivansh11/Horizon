@@ -3,7 +3,7 @@
 
 #include "gfx/horizon_device.h"
 #include "gfx/horizon_pipeline.h"
-#include "horizon_mesh.h"
+#include "core/horizon_mesh.h"
 
 namespace horizon {
 

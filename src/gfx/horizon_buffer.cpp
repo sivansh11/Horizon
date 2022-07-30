@@ -1,6 +1,6 @@
 #include "gfx/horizon_buffer.h"
 
-#include "debug.h"
+#include "core/debug.h"
 
 #include <cstring>
 

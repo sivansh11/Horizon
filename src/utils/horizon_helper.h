@@ -1,7 +1,7 @@
 #ifndef UTILS_HORIZON_HELPER_H
 #define UTILS_HORIZON_HELPER_H
 
-#include "debug.h"
+#include "core/debug.h"
 
 #include <fstream>
 #include <vector>
