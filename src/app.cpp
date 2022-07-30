@@ -1,6 +1,6 @@
 #include "app.h"
 
-#include "render_systems/horizon_test_triangle.h"
+#include "render_systems/horizon_test_triangle_2.h"
 
 App* App::init() {
     App *app = new App();
@@ -13,7 +13,7 @@ void App::shutdown(App *application) {
 }
 
 void App::run() {
-    horizon::TestTriangle test{device, renderer.getSwapChainRenderPass()};
+    horizon::TestTriangle2 test{device, renderer.getSwapChainRenderPass()};
 
     while (!window.shouldClose()) {
         window.pollEvents();
