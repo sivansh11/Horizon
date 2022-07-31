@@ -61,7 +61,7 @@ void Pipeline::createGraphicsPipeline(std::string& vertFilePath, std::string& fr
     pipelineCreateInfo.pViewportState = &pipelineConfig.viewportInfo;
     pipelineCreateInfo.pRasterizationState = &pipelineConfig.rasterizationInfo;
     pipelineCreateInfo.pMultisampleState = &pipelineConfig.multisampleInfo;
-    pipelineCreateInfo.pDepthStencilState = nullptr;
+    pipelineCreateInfo.pDepthStencilState = &pipelineConfig.depthStencilInfo;
     pipelineCreateInfo.pColorBlendState = &pipelineConfig.colorBlendInfo;
     pipelineCreateInfo.pDynamicState = &pipelineConfig.dynamicStateInfo;
     pipelineCreateInfo.layout = pipelineConfig.pipelineLayout;

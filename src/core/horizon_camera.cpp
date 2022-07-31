@@ -18,6 +18,7 @@ void Camera::setOrthographicProjection(float left, float right, float top, float
 void Camera::setPerspectiveProjection(float fovy, float aspect, float near, float far) 
 {
     ASSERT(glm::abs(aspect - std::numeric_limits<float>::epsilon()) > 0.0f, "aspect ratio too small");
+    fovy = glm::radians(fovy);
     const float tanHalfFovy = tan(fovy / 2.f);
     projectionMatrix = glm::mat4{0.0f};
     projectionMatrix[0][0] = 1.f / (aspect * tanHalfFovy);

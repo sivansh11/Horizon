@@ -6,10 +6,10 @@ void Controller::moveInPlaneXZ(GLFWwindow* window, float dt, glm::vec3 &transfor
 {
     glm::vec3 rotate{0};
 
-    if (glfwGetKey(window, keys.lookRight) == GLFW_PRESS) rotate.y += 1; 
-    if (glfwGetKey(window, keys.lookLeft) == GLFW_PRESS) rotate.y -= 1; 
-    if (glfwGetKey(window, keys.lookUp) == GLFW_PRESS) rotate.x += -1; 
-    if (glfwGetKey(window, keys.lookDown) == GLFW_PRESS) rotate.x -= -1; 
+    if (glfwGetKey(window, keys.lookRight) == GLFW_PRESS) rotate.y +=  1; 
+    if (glfwGetKey(window, keys.lookLeft ) == GLFW_PRESS) rotate.y -=  1; 
+    if (glfwGetKey(window, keys.lookUp   ) == GLFW_PRESS) rotate.x -= -1; 
+    if (glfwGetKey(window, keys.lookDown ) == GLFW_PRESS) rotate.x += -1; 
 
     if (glm::dot(rotate, rotate) > std::numeric_limits<float>::epsilon())
     {
