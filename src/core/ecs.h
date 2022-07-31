@@ -35,7 +35,6 @@ public:
     ~ComponentPool() {
         delete[] p_data;
     }
-
     void* get(size_t index) override {
         return p_data + index * m_componentSize;
     }
@@ -58,6 +57,7 @@ class Scene {
     };
 public:
     Scene() {
+        entities.reserve(MAX_ENTITIES);
         for (int i = 0; i < MAX_ENTITIES; i++) {
             availableIDs.push(static_cast<EntityID>(i));
         }
@@ -105,13 +105,13 @@ public:
         entities[entityID].mask.reset();
         availableIDs.push(entityID);
     }
-    void* assign(EntityID entityID, ComponentID componentID) {
-        ASSERT(registeredComponents.find(componentID) != registeredComponents.end(), "component id provided not a registered component, use component ids only given by getComponentID<T>();");
-        ASSERT(entities[entityID].mask.test(componentID) == false, "entity already has component");
-        void* p_component = componentPools[componentID]->construct(entityID);
-        entities[entityID].mask.set(componentID);
-        return p_component;
-    }
+    // void* assign(EntityID entityID, ComponentID componentID) {
+    //     ASSERT(registeredComponents.find(componentID) != registeredComponents.end(), "component id provided not a registered component, use component ids only given by getComponentID<T>();");
+    //     ASSERT(entities[entityID].mask.test(componentID) == false, "entity already has component");
+    //     void* p_component = componentPools[componentID]->construct(entityID);
+    //     entities[entityID].mask.set(componentID);
+    //     return p_component;
+    // }
     template <typename... ComponentTypes>
     decltype(auto) assign(EntityID entityID) {
         static_assert(sizeof...(ComponentTypes) != 0);   // suggested by zilverblade
@@ -173,7 +173,7 @@ private:
         ASSERT(entities[entityID].isValid == true, "entity does not exist");
         ComponentID componentID = getComponentID<T>();
         ASSERT(entities[entityID].mask.test(componentID) == false, "entity already has component");
-        T* p_component = (T*)(componentPools[componentID]->construct(entityID));
+        T* p_component = (T*)(componentPools[componentID]->construct(static_cast<size_t>(entityID)));
         entities[entityID].mask.set(componentID);
         return *p_component;
     }
@@ -206,8 +206,12 @@ struct SceneView {
         bool isValidIndex() {
             return scene.isValid(scene.entities[index].id) && (all || mask == (mask & scene.entities[index].mask));
         }
-        EntityID operator*() const {
-            return scene.entities[index].id;
+        decltype(auto) operator*() const {
+            if constexpr(sizeof...(ComponentTypes) != 0) {
+                return std::forward_as_tuple<EntityID&, ComponentTypes&...>(scene.entities[index].id, scene.get<ComponentTypes>(scene.entities[index].id)...);
+            } else {
+                return (scene.entities[index].id);
+            }
         }
         bool operator==(const Iterator &other) const {
             return index == other.index || index == scene.entities.size();
@@ -215,7 +219,7 @@ struct SceneView {
         bool operator!=(const Iterator &other) const {
             return index != other.index && index != scene.entities.size();
         }
-        Iterator& operator++() {
+        decltype(auto) operator++() {
             do  {
                 index++;
             } while(index < scene.entities.size() && !isValidIndex());
@@ -247,4 +251,4 @@ struct SceneView {
 } // namespace ecs
 
 
-#endif  
+#endif

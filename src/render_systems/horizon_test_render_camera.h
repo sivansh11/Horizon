@@ -48,11 +48,10 @@ public:
     void render(VkCommandBuffer commandBuffer, ecs::Scene& scene, ecs::EntityID cameraEnt) {
         mPipeline->bind(commandBuffer);
         auto camera = scene.get<horizon::Camera>(cameraEnt);
-        static auto proj = camera.getProjection();
-        static auto view = camera.getView();
+        auto proj = camera.getProjection();
+        auto view = camera.getView();
         Push push{};
-        for (auto ent : ecs::SceneView<Transform, horizon::Mesh>(scene)) {
-            auto [transform, mesh] = scene.get<horizon::Transform, horizon::Mesh>(ent);
+        for (auto [ent, transform, mesh] : ecs::SceneView<Transform, horizon::Mesh>(scene)) {
             push.PVM = proj * view * transform.mat4();
             vkCmdPushConstants(commandBuffer, mPipelineLayout, VK_SHADER_STAGE_ALL, 0, sizeof(Push), &push);
             mesh.bind(commandBuffer);
