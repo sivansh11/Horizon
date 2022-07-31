@@ -1,5 +1,5 @@
-#ifndef HORIZON_WINDOW_H
-#define HORIZON_WINDOW_H
+#ifndef CORE_HORIZON_WINDOW_H
+#define CORE_HORIZON_WINDOW_H
 
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
@@ -21,6 +21,8 @@ public:
     VkResult createWindowSurface(VkInstance instance, const VkAllocationCallbacks *allocator, VkSurfaceKHR *surface) {
         return glfwCreateWindowSurface(instance, mWindow, allocator, surface);
     }
+
+    float getAspect() { return static_cast<float>(mWidth) / static_cast<float>(mHeight); }
 
 private:
     GLFWwindow *mWindow;

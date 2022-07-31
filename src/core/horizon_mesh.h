@@ -1,5 +1,5 @@
-#ifndef HORIZON_MESH_H
-#define HORIZON_MESH_H
+#ifndef CORE_HORIZON_MESH_H
+#define CORE_HORIZON_MESH_H
 
 #include "gfx/horizon_device.h"
 #include "gfx/horizon_buffer.h"
@@ -30,17 +30,20 @@ struct Vertex {
 class Mesh {
 public:
     Mesh(gfx::Device& deviceRef, std::vector<Vertex> *vertices, std::vector<uint32_t> *indices);
+    Mesh();
     ~Mesh();
 
+    void init(gfx::Device& deviceRef, std::vector<Vertex> *vertices, std::vector<uint32_t> *indices);
     void bind(VkCommandBuffer commandBuffer);
     void draw(VkCommandBuffer commandBUffer);
+    void free();
 
 private:
     void createVertexBuffer(std::vector<Vertex> *vertices);
     void createIndexBuffer(std::vector<uint32_t> *indices);
 
 private:
-    gfx::Device& mDevice;
+    gfx::Device *mDevice;
 
     std::unique_ptr<gfx::Buffer> vertexBuffer{nullptr};
     std::unique_ptr<gfx::Buffer> indexBuffer{nullptr};

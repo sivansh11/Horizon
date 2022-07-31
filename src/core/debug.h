@@ -1,5 +1,5 @@
-#ifndef DEBUG_H
-#define DEBUG_H
+#ifndef CORE_DEBUG_H
+#define CORE_DEBUG_H
 
 #include <stdexcept>
 #include <iostream>

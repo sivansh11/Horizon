@@ -130,15 +130,10 @@ public:
             return std::forward_as_tuple<ComponentTypes&...>(get_<ComponentTypes>(entityID)...);
         }
     }
-
-    template <typename T>
+    template <typename... ComponentTypes>
     void remove(EntityID entityID) {
-        ComponentID componentID = getComponentID<T>();
-        ASSERT(isValid(entityID) == true, "entity does not exist");
-        ASSERT(entities[entityID].mask.test(componentID) == true, "cannot remove component from entity which doesnt contain it in the first place");
-        componentPools[componentID]->destroy(entityID);
-        entities[entityID].mask.reset(componentID);
-        entities[entityID].isValid = false;
+        static_assert(sizeof...(ComponentTypes) != 0);   // suggested by zilverblade
+        remove_<ComponentTypes...>(entityID);                
     }
     template <typename T>
     bool has(EntityID entityID) {
@@ -153,6 +148,19 @@ public:
     std::vector<EntityDescription> entities;
 
 private:
+    template <typename T, typename... O>
+    void remove_(EntityID entityID) {
+        ComponentID componentID = getComponentID<T>();
+        ASSERT(isValid(entityID) == true, "entity does not exist");
+        ASSERT(entities[entityID].mask.test(componentID) == true, "cannot remove component from entity which doesnt contain it in the first place");
+        componentPools[componentID]->destroy(entityID);
+        entities[entityID].mask.reset(componentID);
+        if constexpr(sizeof...(O) == 0) {
+            return;
+        } else {
+            remove_<O...>(entityID);
+        }
+    }
     template <typename T>
     T& get_(EntityID entityID) {
         ASSERT(entities[entityID].isValid == true, "entity does not exist");
@@ -239,4 +247,4 @@ struct SceneView {
 } // namespace ecs
 
 
-#endif
+#endif  

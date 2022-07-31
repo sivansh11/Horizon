@@ -4,16 +4,29 @@
 
 namespace horizon {
 
-Mesh::Mesh(gfx::Device& deviceRef, std::vector<Vertex> *vertices, std::vector<uint32_t> *indices) : mDevice(deviceRef) {
+Mesh::Mesh(gfx::Device& deviceRef, std::vector<Vertex> *vertices, std::vector<uint32_t> *indices) {
+    init(deviceRef, vertices, indices); 
+}
+
+Mesh::Mesh() {
+
+}
+
+void Mesh::init(gfx::Device& deviceRef, std::vector<Vertex> *vertices, std::vector<uint32_t> *indices) {
+    mDevice = &deviceRef;
     if (vertices != nullptr) 
         createVertexBuffer(vertices);
     if (indices != nullptr) 
-        createIndexBuffer(indices);
-    
+        createIndexBuffer(indices);   
 }
 
 Mesh::~Mesh() {
+    free();
+}
 
+void Mesh::free() {
+    vertexBuffer = nullptr;
+    indexBuffer = nullptr;
 }
 
 void Mesh::createVertexBuffer(std::vector<Vertex> *vertices) {
@@ -21,7 +34,7 @@ void Mesh::createVertexBuffer(std::vector<Vertex> *vertices) {
     VkDeviceSize bufferSize = sizeof(Vertex) * vertices->size();
     uint32_t vertexSize = sizeof(Vertex);
 
-    gfx::Buffer stagingBuffer(mDevice, 
+    gfx::Buffer stagingBuffer(*mDevice, 
                               vertexSize, 
                               vertices->size(), 
                               VK_BUFFER_USAGE_TRANSFER_SRC_BIT, 
@@ -29,7 +42,7 @@ void Mesh::createVertexBuffer(std::vector<Vertex> *vertices) {
     stagingBuffer.map();
     stagingBuffer.writeToMappedBuffer((void*)vertices->data());
 
-    vertexBuffer = std::make_unique<gfx::Buffer>(mDevice,
+    vertexBuffer = std::make_unique<gfx::Buffer>(*mDevice,
                                                  vertexSize,
                                                  vertices->size(),
                                                  VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
@@ -41,7 +54,7 @@ void Mesh::createIndexBuffer(std::vector<uint32_t> *indices) {
     VkDeviceSize bufferSize = sizeof(uint32_t) * indices->size();
     uint32_t indexSize = sizeof(uint32_t);
 
-    gfx::Buffer stagingBuffer(mDevice,
+    gfx::Buffer stagingBuffer(*mDevice,
                               indexSize,
                               indices->size(),
                               VK_BUFFER_USAGE_TRANSFER_SRC_BIT, 
@@ -49,7 +62,7 @@ void Mesh::createIndexBuffer(std::vector<uint32_t> *indices) {
     stagingBuffer.map();
     stagingBuffer.writeToMappedBuffer((void*)indices->data());
 
-    indexBuffer = std::make_unique<gfx::Buffer>(mDevice,
+    indexBuffer = std::make_unique<gfx::Buffer>(*mDevice,
                                                 indexSize,
                                                 indices->size(),
                                                 VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
