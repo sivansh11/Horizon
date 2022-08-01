@@ -40,7 +40,11 @@ public:
         return currentFrameIndex;
     }
 
+    size_t getSwapChainImageCount() { return mSwapChain->getImageCount(); }
+    VkSurfaceFormatKHR& getSwapChainSurfaceFormat() { return mSwapChain->getSurfaceFormat(); }
     VkRenderPass& getSwapChainRenderPass() { return mSwapChain->getRenderPass(); }
+    VkPresentModeKHR& getSwapChainPresentMode() { return mSwapChain->getPresentMode(); }
+    VkSwapchainKHR& getSwapChain() { return mSwapChain->getSwapChain(); }
 
 private:
     void recreateSwapChain();

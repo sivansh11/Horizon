@@ -21,7 +21,8 @@ public:
     VkResult createWindowSurface(VkInstance instance, const VkAllocationCallbacks *allocator, VkSurfaceKHR *surface) {
         return glfwCreateWindowSurface(instance, mWindow, allocator, surface);
     }
-
+    int getWidth() { return mWidth; }
+    int getHeight() { return mHeight; }
     float getAspect() { return static_cast<float>(mWidth) / static_cast<float>(mHeight); }
 
 private:

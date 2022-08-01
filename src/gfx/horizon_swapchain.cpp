@@ -84,7 +84,9 @@ VkExtent2D SwapChain::chooseSwapExtent(VkSurfaceCapabilitiesKHR &capabilities) {
 void SwapChain::createSwapChain() {
     SwapChainSupportDetails swapChainSupport = mDevice.getSwapChainSupport();
     VkSurfaceFormatKHR surfaceFormat = chooseSwapSurfaceFormat(swapChainSupport.formats);
+    mSurfaceFormat = surfaceFormat;
     VkPresentModeKHR presentMode = chooseSwapPresentMode(swapChainSupport.presentModes);
+    mPresentMode = presentMode;
     VkExtent2D extent = chooseSwapExtent(swapChainSupport.capabilities);
 
     uint32_t imageCount = swapChainSupport.capabilities.minImageCount + 1;

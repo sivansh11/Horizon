@@ -28,11 +28,15 @@ public:
         return !operator==(other);
     }
 
+    size_t getImageCount() { return mSwapChainImages.size(); }
     VkResult acquireNextImage(uint32_t &imageIndex);
     VkResult submitCommandBuffer(VkCommandBuffer &buffer, uint32_t &imageIndex);
     VkRenderPass& getRenderPass() { return mRenderPass; }
     VkFramebuffer& getFramebuffer(int index) { return mSwapChainFramebuffers[index]; }
     VkExtent2D& getExtent() { return mSwapChainExtent; }
+    VkSurfaceFormatKHR& getSurfaceFormat() { return mSurfaceFormat; }
+    VkPresentModeKHR& getPresentMode() { return mPresentMode; }
+    VkSwapchainKHR& getSwapChain() { return mSwapChain; }
 
 public:
     static constexpr int MAX_FRAMES_IN_FLIGHT = 2;
@@ -54,6 +58,8 @@ private:
 private:
     Device& mDevice;
     VkExtent2D mWindowExtent;
+    VkSurfaceFormatKHR mSurfaceFormat{};
+    VkPresentModeKHR mPresentMode{};
     std::shared_ptr<SwapChain> oldSwapChain{nullptr};
     VkSwapchainKHR mSwapChain{};
     std::vector<VkImage> mSwapChainImages{};

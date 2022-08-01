@@ -39,11 +39,13 @@ public:
     VkCommandPool& getCommandPool() { return mCommandPool; }
     VkQueue& getGraphicsQueue() { return mGraphicsQueue; }
     VkQueue& getPresentQueue() { return mPresentQueue; }
+    VkInstance& getInstance() { return mInstance; }
+    VkPhysicalDevice& getPhysicalDevice() { return mPhysicalDevice; }
     void waitIdle() { vkDeviceWaitIdle(mDevice); }
     VkFormat findSupportFormat(const std::vector<VkFormat> &candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
     VkCommandBuffer getSingleUseCommandBuffer();
     void endSingleUseCommandBuffer(VkCommandBuffer commandBuffer);
-
+    
 public:
     VkPhysicalDeviceProperties physicalDeviceProperties{};
     uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);

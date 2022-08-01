@@ -57,6 +57,8 @@ public:
     DescriptorPool(Device& deviceRef, VkDescriptorPoolCreateFlags poolFlags, std::vector<VkDescriptorPoolSize>& poolSizes, uint32_t maxSets);
     ~DescriptorPool();
 
+    VkDescriptorPool& getDescriptorPool() { return mDescriptorPool; }
+
     bool allocateDescriptor(const VkDescriptorSetLayout DescriptorSetLayout, VkDescriptorSet &descriptor);
     void freeDescriptor(VkDescriptorSet *descriptors, uint32_t size);
 

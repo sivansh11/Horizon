@@ -1,6 +1,7 @@
 #include "app.h"
 
 #include "render_systems/horizon_test_render_camera.h"
+#include "render_systems/horizon_imgui_render_system.h"
 #include "core/horizon_camera.h"
 #include "core/horizon_transform.h"
 #include "core/horizon_mesh.h"
@@ -107,11 +108,19 @@ void App::run() {
 
     horizon::Controller controller{};
 
+    horizon::ImGuiRenderSystem imguiRenderSystem{window, device, renderer, static_cast<uint32_t>(renderer.getSwapChainImageCount())};
+
     while (!window.shouldClose()) {
         window.pollEvents();
         
         controller.moveInPlaneXZ(window.getGLFWwindow(), 0.01, cameraTransform.translation, cameraTransform.rotation);
         camera.setViewYXZ(cameraTransform.translation, cameraTransform.rotation);
+
+        imguiRenderSystem.newFrame();
+
+        ImGui::Begin("test window");
+        ImGui::Text("hello!");
+        ImGui::End();
 
         // rendering
         if (auto commandBuffer = renderer.beginFrame()) {
@@ -121,6 +130,7 @@ void App::run() {
             uboBuffers[frameIndex]->flush();
             renderer.beginSwapChainRenderPass(commandBuffer);
             test.render(commandBuffer, globalDescriptorSets[frameIndex], scene, cameraEnt);
+            imguiRenderSystem.render(commandBuffer);
             renderer.endSwapChainRenderPass(commandBuffer);
             renderer.endFrame();
         }
