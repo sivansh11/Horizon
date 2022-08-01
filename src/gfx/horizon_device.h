@@ -27,6 +27,11 @@ public:
     Device(Window &window);
     ~Device();
 
+    Device(const Device&) = delete;
+    void operator=(const Device&) = delete;
+    Device(const Device&&) = delete;
+    void operator=(const Device&&) = delete;
+
     inline VkDevice& getDevice() { return mDevice; }
     SwapChainSupportDetails getSwapChainSupport() { return querySwapChainSupport(mPhysicalDevice); }
     VkSurfaceKHR& getSurface() { return mSurface; }

@@ -18,6 +18,11 @@ public:
     Renderer(Window &window, Device &device);
     ~Renderer();
 
+    Renderer(const Renderer&) = delete;
+    void operator=(const Renderer&) = delete;
+    Renderer(const Renderer&&) = delete;
+    void operator=(const Renderer&&) = delete;
+
     VkCommandBuffer beginFrame();
     void endFrame();
 

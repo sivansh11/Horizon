@@ -15,6 +15,11 @@ public:
     SwapChain(VkExtent2D windowExtent, std::shared_ptr<SwapChain> previous);
     ~SwapChain();
 
+    SwapChain(const SwapChain&) = delete;
+    void operator=(const SwapChain&) = delete;
+    SwapChain(const SwapChain&&) = delete;
+    void operator=(const SwapChain&&) = delete;
+
     bool operator==(const SwapChain &other) {
         return mSwapChainFormat == other.mSwapChainFormat;
     }

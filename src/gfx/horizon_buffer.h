@@ -17,6 +17,11 @@ public:
            VkDeviceSize minOffsetAlignment = 1);
     ~Buffer();
 
+    Buffer(const Buffer&) = delete;
+    void operator=(const Buffer&) = delete;
+    Buffer(const Buffer&&) = delete;
+    void operator=(const Buffer&&) = delete;
+
     void map(VkDeviceSize size = VK_WHOLE_SIZE, VkDeviceSize offset = 0);
     void unmap();
 

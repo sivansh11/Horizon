@@ -31,6 +31,11 @@ public:
     Pipeline(Device &deviceRef, std::string vertFilePath, std::string fragFilePath, PipelineConfigInfo &pipelineConfig);
     ~Pipeline();
 
+    Pipeline(const Pipeline&) = delete;
+    void operator=(const Pipeline&) = delete;
+    Pipeline(const Pipeline&&) = delete;
+    void operator=(const Pipeline&&) = delete;
+
     static void defaultPipelineConfigInfo(PipelineConfigInfo& configInfo, 
                                           std::vector<VkVertexInputBindingDescription>& vertexBindingDescriptions, 
                                           std::vector<VkVertexInputAttributeDescription>& vertexAttributeDescriptions);
