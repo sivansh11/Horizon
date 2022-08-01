@@ -30,6 +30,11 @@ public:
         return mCommandBuffers[currentFrameIndex];
     }
 
+    int getFrameIndex() {
+        ASSERT(isFrameStarted, "Cannot get frame index if frame not in progress!");
+        return currentFrameIndex;
+    }
+
     VkRenderPass& getSwapChainRenderPass() { return mSwapChain->getRenderPass(); }
 
 private:

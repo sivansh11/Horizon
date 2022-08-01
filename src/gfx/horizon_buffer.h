@@ -27,6 +27,9 @@ public:
 
     VkBuffer& getBuffer() { return mBuffer; }
     VkDeviceSize getCount() { return mInstanceCount; }
+    VkDescriptorBufferInfo getDescriptorInfo(VkDeviceSize size = VK_WHOLE_SIZE, VkDeviceSize offset = 0) {
+        return VkDescriptorBufferInfo{mBuffer, offset, size};
+    }
 
     static void copyBuffer(Buffer& srcBuffer, Buffer& dstBuffer, VkDeviceSize size);
 
