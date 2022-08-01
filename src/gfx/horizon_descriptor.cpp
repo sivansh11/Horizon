@@ -94,7 +94,7 @@ DescriptorWriter& DescriptorWriter::writeBuffer(uint32_t binding, VkDescriptorBu
 }
 
 bool DescriptorWriter::pushWrites(VkDescriptorSet &descriptor) {
-    if (mPool.allocateDescriptor(mSetLayout.mDescriptorSetLayout, descriptor)) {
+    if (!mPool.allocateDescriptor(mSetLayout.mDescriptorSetLayout, descriptor)) {
         return false;
     }
     for (auto& write : mWrites) {
