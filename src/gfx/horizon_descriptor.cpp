@@ -7,14 +7,23 @@ namespace horizon {
 namespace gfx {
 
 DescriptorSetLayout::Builder& DescriptorSetLayout::Builder::addBinding(uint32_t binding, VkDescriptorType descriptorType, VkShaderStageFlags stageFlags, uint32_t count) {
-    ASSERT(bindings.find(binding) == bindings.end(), "Binding already exist!");
+    ASSERT(mBindings.find(binding) == mBindings.end(), "Binding already exist!");
     VkDescriptorSetLayoutBinding layoutBinding{};
     layoutBinding.binding = binding;
     layoutBinding.descriptorType = descriptorType;
     layoutBinding.descriptorCount = count;
     layoutBinding.stageFlags = stageFlags;
-    bindings[binding] = layoutBinding;
+    mBindings[binding] = layoutBinding;
     return *this;
+}
+
+DescriptorSetLayout::Builder& DescriptorSetLayout::Builder::addFlags(VkDescriptorSetLayoutCreateFlags flags) {
+    mFlags |= flags;
+    return *this;
+}
+
+std::unique_ptr<DescriptorSetLayout> DescriptorSetLayout::Builder::build() {
+    return std::make_unique<DescriptorSetLayout>(mDevice, mFlags, mBindings);
 }
 
 DescriptorSetLayout::DescriptorSetLayout(Device& deviceRef, VkDescriptorSetLayoutCreateFlags flags, BindingMap bindings) : mDevice(deviceRef) {
@@ -38,8 +47,22 @@ DescriptorSetLayout::~DescriptorSetLayout() {
 }
 
 DescriptorPool::Builder& DescriptorPool::Builder::addPoolSize(VkDescriptorType descriptorType, uint32_t count) {
-    poolSizes.push_back({descriptorType, count});
+    mPoolSizes.push_back({descriptorType, count});
     return *this;
+}
+
+DescriptorPool::Builder& DescriptorPool::Builder::addFlags(VkDescriptorPoolCreateFlags flags) {
+    mFlags |= flags;
+    return *this;
+}
+
+DescriptorPool::Builder& DescriptorPool::Builder::setMaxSets(uint32_t maxSets) {
+    mMaxSets = maxSets;
+    return *this;
+}
+
+std::unique_ptr<DescriptorPool> DescriptorPool::Builder::build() {
+    return std::make_unique<DescriptorPool>(mDevice, mFlags, mPoolSizes, mMaxSets);
 }
 
 DescriptorPool::DescriptorPool(Device& deviceRef, VkDescriptorPoolCreateFlags poolFlags, std::vector<VkDescriptorPoolSize>& poolSizes, uint32_t maxSets) : mDevice(deviceRef) {

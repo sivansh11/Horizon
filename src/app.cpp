@@ -65,13 +65,11 @@ std::vector<horizon::Vertex> vertices {
 };
 
 void App::run() {
-    horizon::gfx::DescriptorPool globalPool(device, 
-                                            0, 
-                                            horizon::gfx::DescriptorPool::Builder()
-                                                .addPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, horizon::gfx::SwapChain::MAX_FRAMES_IN_FLIGHT)
-                                                .getPoolSizes(),
-                                            horizon::gfx::SwapChain::MAX_FRAMES_IN_FLIGHT);
-
+    std::unique_ptr<horizon::gfx::DescriptorPool> globalPool = horizon::gfx::DescriptorPool::Builder(device)
+                                                                   .setMaxSets(horizon::gfx::SwapChain::MAX_FRAMES_IN_FLIGHT)
+                                                                   .addPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, horizon::gfx::SwapChain::MAX_FRAMES_IN_FLIGHT)
+                                                                   .build();
+                                                
     std::vector<std::unique_ptr<horizon::gfx::Buffer>> uboBuffers;
     for (int i = 0; i < horizon::gfx::SwapChain::MAX_FRAMES_IN_FLIGHT; i++) {
         uboBuffers.push_back(std::make_unique<horizon::gfx::Buffer>(device,
@@ -82,21 +80,19 @@ void App::run() {
         uboBuffers[i]->map();
     }
 
-    horizon::gfx::DescriptorSetLayout globalSetLayout(device,
-                                                      0,
-                                                      horizon::gfx::DescriptorSetLayout::Builder()
-                                                          .addBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_ALL_GRAPHICS)
-                                                          .getBindings());
+    std::unique_ptr<horizon::gfx::DescriptorSetLayout> globalSetLayout = horizon::gfx::DescriptorSetLayout::Builder(device)
+                                                                             .addBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_ALL_GRAPHICS)
+                                                                             .build();
 
     std::vector<VkDescriptorSet> globalDescriptorSets(horizon::gfx::SwapChain::MAX_FRAMES_IN_FLIGHT);
     for (int i = 0; i < globalDescriptorSets.size(); i++) {
         auto bufferInfo = uboBuffers[i]->getDescriptorInfo();
-        horizon::gfx::DescriptorWriter(globalSetLayout, globalPool)
+        horizon::gfx::DescriptorWriter(*globalSetLayout, *globalPool)
             .writeBuffer(0, &bufferInfo)
             .pushWrites(globalDescriptorSets[i]);
     }
 
-    horizon::TestRenderCamera test{device, renderer.getSwapChainRenderPass(), globalSetLayout.getSetLayout()};
+    horizon::TestRenderCamera test{device, renderer.getSwapChainRenderPass(), globalSetLayout->getSetLayout()};
 
     ecs::Scene scene;
     

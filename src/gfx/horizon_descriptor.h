@@ -4,6 +4,7 @@
 #include "gfx/horizon_device.h"
 
 #include <unordered_map>
+#include <memory>
 
 namespace horizon {
 
@@ -14,10 +15,15 @@ public:
     using BindingMap = std::unordered_map<uint32_t, VkDescriptorSetLayoutBinding>;
     class Builder {
     public:
+        Builder(Device& deviceRef) : mDevice(deviceRef) {}
         Builder& addBinding(uint32_t binding, VkDescriptorType descriptorType, VkShaderStageFlags stageFlags, uint32_t count = 1);
-        BindingMap& getBindings() { return bindings; }
+        Builder& addFlags(VkDescriptorSetLayoutCreateFlags flags);
+        std::unique_ptr<DescriptorSetLayout> build();
+        BindingMap& getBindings() { return mBindings; }
     private:
-        BindingMap bindings;
+        Device& mDevice;
+        BindingMap mBindings;
+        VkDescriptorSetLayoutCreateFlags mFlags{0};
     };
     DescriptorSetLayout(Device& deviceRef, VkDescriptorSetLayoutCreateFlags flags, BindingMap bindings);
     ~DescriptorSetLayout();
@@ -36,12 +42,19 @@ class DescriptorPool {
 public:
     class Builder {
     public:
+        Builder(Device& deviceRef) : mDevice(deviceRef) {}
         Builder& addPoolSize(VkDescriptorType descriptorType, uint32_t count);
-        std::vector<VkDescriptorPoolSize>& getPoolSizes() { return poolSizes; }
+        Builder& addFlags(VkDescriptorPoolCreateFlags flags);
+        Builder& setMaxSets(uint32_t maxSets);
+        std::unique_ptr<DescriptorPool> build();
+        std::vector<VkDescriptorPoolSize>& getPoolSizes() { return mPoolSizes; }
     private:
-        std::vector<VkDescriptorPoolSize> poolSizes;
+        Device& mDevice;
+        uint32_t mMaxSets{1000};
+        VkDescriptorPoolCreateFlags mFlags{0};
+        std::vector<VkDescriptorPoolSize> mPoolSizes;
     };
-    DescriptorPool(Device& deviceRef, VkDescriptorPoolCreateFlags poolFlags, std::vector<VkDescriptorPoolSize>& poolSizes, uint32_t maxSets = 1000);
+    DescriptorPool(Device& deviceRef, VkDescriptorPoolCreateFlags poolFlags, std::vector<VkDescriptorPoolSize>& poolSizes, uint32_t maxSets);
     ~DescriptorPool();
 
     bool allocateDescriptor(const VkDescriptorSetLayout DescriptorSetLayout, VkDescriptorSet &descriptor);
