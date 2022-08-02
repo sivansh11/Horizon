@@ -14,7 +14,7 @@ public:
     void run();
 
 private:
-    horizon::Window window{800, 600, "Horizon"};
+    horizon::Window window{1200, 800, "Horizon"};
     horizon::gfx::Device device{window};
     horizon::gfx::Renderer renderer{window, device};
 };

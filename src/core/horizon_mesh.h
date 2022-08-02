@@ -3,6 +3,7 @@
 
 #include "gfx/horizon_device.h"
 #include "gfx/horizon_buffer.h"
+#include "core/horizon_transform.h"
 
 #include <glm/glm.hpp>
 
@@ -27,16 +28,22 @@ struct Vertex {
     }
 };
 
+struct Material {
+
+};
+
 class Mesh {
 public:
-    Mesh(gfx::Device& deviceRef, std::vector<Vertex> *vertices, std::vector<uint32_t> *indices);
+    Mesh(gfx::Device& deviceRef, std::vector<Vertex> *vertices, std::vector<uint32_t> *indices, Material& material);
     Mesh();
     ~Mesh();
 
-    void init(gfx::Device& deviceRef, std::vector<Vertex> *vertices, std::vector<uint32_t> *indices);
+    void init(gfx::Device& deviceRef, std::vector<Vertex> *vertices, std::vector<uint32_t> *indices, Material& material);
     void bind(VkCommandBuffer commandBuffer);
     void draw(VkCommandBuffer commandBUffer);
     void free();
+
+    Transform& getTransform() { return mTransform; }
 
 private:
     void createVertexBuffer(std::vector<Vertex> *vertices);
@@ -44,7 +51,8 @@ private:
 
 private:
     gfx::Device *mDevice;
-
+    Material mMaterial;
+    Transform mTransform{};
     std::unique_ptr<gfx::Buffer> vertexBuffer{nullptr};
     std::unique_ptr<gfx::Buffer> indexBuffer{nullptr};
 };

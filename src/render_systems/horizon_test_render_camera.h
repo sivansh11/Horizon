@@ -3,7 +3,7 @@
 
 #include "gfx/horizon_device.h"
 #include "gfx/horizon_pipeline.h"
-#include "core/horizon_mesh.h"
+#include "core/horizon_model.h"
 #include "core/ecs.h"
 #include "core/horizon_camera.h"
 #include "core/horizon_transform.h"
@@ -61,11 +61,10 @@ public:
         vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, mPipelineLayout, 0, 1, &set, 0, nullptr);
 
         Push push;
-        for (auto [ent, transform, mesh] : ecs::SceneView<Transform, horizon::Mesh>(scene)) {
+        for (auto [ent, transform, model] : ecs::SceneView<Transform, horizon::Model>(scene)) {
             push.model = transform.mat4();
             vkCmdPushConstants(commandBuffer, mPipelineLayout, VK_SHADER_STAGE_ALL, 0, sizeof(Push), &push);
-            mesh.bind(commandBuffer);
-            mesh.draw(commandBuffer);
+            model.draw(commandBuffer);
         }
     }
 private:

@@ -4,7 +4,7 @@
 #include "render_systems/horizon_imgui_render_system.h"
 #include "core/horizon_camera.h"
 #include "core/horizon_transform.h"
-#include "core/horizon_mesh.h"
+#include "core/horizon_model.h"
 #include "core/horizon_controller.h"
 #include "gfx/horizon_descriptor.h"
 #include "core/ecs.h"
@@ -18,52 +18,6 @@ App* App::init() {
 void App::shutdown(App *application) {
     delete application;
 }
-
-inline constexpr const glm::vec3 red    = {1, 0, 0};
-inline constexpr const glm::vec3 yellow = {1, 1, 0};
-inline constexpr const glm::vec3 white  = {1, 1, 1};
-inline constexpr const glm::vec3 green  = {0, 1, 0};
-inline constexpr const glm::vec3 purple = {1, 0, 1};
-inline constexpr const glm::vec3 blue   = {0, 0, 1};
-
-std::vector<horizon::Vertex> vertices {
-    {{-1.0f,-1.0f,-1.0f}, red    , {1, 1, 1}, {0, 0}}, // triangle 1 : begin
-    {{-1.0f,-1.0f, 1.0f}, red    , {1, 1, 1}, {0, 0}},
-    {{-1.0f, 1.0f, 1.0f}, red    , {1, 1, 1}, {0, 0}}, // triangle 1 : end
-    {{ 1.0f, 1.0f,-1.0f}, red    , {1, 1, 1}, {0, 0}}, // triangle 2 : begin
-    {{-1.0f,-1.0f,-1.0f}, red    , {1, 1, 1}, {0, 0}},
-    {{-1.0f, 1.0f,-1.0f}, red    , {1, 1, 1}, {0, 0}}, // triangle 2 : end
-    {{ 1.0f,-1.0f, 1.0f}, yellow , {1, 1, 1}, {0, 0}},
-    {{-1.0f,-1.0f,-1.0f}, yellow , {1, 1, 1}, {0, 0}},
-    {{ 1.0f,-1.0f,-1.0f}, yellow , {1, 1, 1}, {0, 0}},
-    {{ 1.0f, 1.0f,-1.0f}, yellow , {1, 1, 1}, {0, 0}},
-    {{ 1.0f,-1.0f,-1.0f}, yellow , {1, 1, 1}, {0, 0}},
-    {{-1.0f,-1.0f,-1.0f}, yellow , {1, 1, 1}, {0, 0}},
-    {{-1.0f,-1.0f,-1.0f}, white  , {1, 1, 1}, {0, 0}},
-    {{-1.0f, 1.0f, 1.0f}, white  , {1, 1, 1}, {0, 0}},
-    {{-1.0f, 1.0f,-1.0f}, white  , {1, 1, 1}, {0, 0}},
-    {{ 1.0f,-1.0f, 1.0f}, white  , {1, 1, 1}, {0, 0}},
-    {{-1.0f,-1.0f, 1.0f}, white  , {1, 1, 1}, {0, 0}},
-    {{-1.0f,-1.0f,-1.0f}, white  , {1, 1, 1}, {0, 0}},
-    {{-1.0f, 1.0f, 1.0f}, green  , {1, 1, 1}, {0, 0}},
-    {{-1.0f,-1.0f, 1.0f}, green  , {1, 1, 1}, {0, 0}},
-    {{ 1.0f,-1.0f, 1.0f}, green  , {1, 1, 1}, {0, 0}},
-    {{ 1.0f, 1.0f, 1.0f}, green  , {1, 1, 1}, {0, 0}},
-    {{ 1.0f,-1.0f,-1.0f}, green  , {1, 1, 1}, {0, 0}},
-    {{ 1.0f, 1.0f,-1.0f}, green  , {1, 1, 1}, {0, 0}},
-    {{ 1.0f,-1.0f,-1.0f}, purple , {1, 1, 1}, {0, 0}},
-    {{ 1.0f, 1.0f, 1.0f}, purple , {1, 1, 1}, {0, 0}},
-    {{ 1.0f,-1.0f, 1.0f}, purple , {1, 1, 1}, {0, 0}},
-    {{ 1.0f, 1.0f, 1.0f}, purple , {1, 1, 1}, {0, 0}},
-    {{ 1.0f, 1.0f,-1.0f}, purple , {1, 1, 1}, {0, 0}},
-    {{-1.0f, 1.0f,-1.0f}, purple , {1, 1, 1}, {0, 0}},
-    {{ 1.0f, 1.0f, 1.0f}, blue   , {1, 1, 1}, {0, 0}},
-    {{-1.0f, 1.0f,-1.0f}, blue   , {1, 1, 1}, {0, 0}},
-    {{-1.0f, 1.0f, 1.0f}, blue   , {1, 1, 1}, {0, 0}},
-    {{ 1.0f, 1.0f, 1.0f}, blue   , {1, 1, 1}, {0, 0}},
-    {{-1.0f, 1.0f, 1.0f}, blue   , {1, 1, 1}, {0, 0}},
-    {{ 1.0f,-1.0f, 1.0f}, blue   , {1, 1, 1}, {0, 0}}
-};
 
 void App::run() {
     std::unique_ptr<horizon::gfx::DescriptorPool> globalPool = horizon::gfx::DescriptorPool::Builder(device)
@@ -102,8 +56,8 @@ void App::run() {
     camera.setPerspectiveProjection(90.0f, window.getAspect(), 0.001f, 100.0f);
 
     auto ent = scene.newEntity();
-    auto [transform, mesh] = scene.assign<horizon::Transform, horizon::Mesh>(ent);
-    mesh.init(device, &vertices, nullptr);
+    auto [transform, model] = scene.assign<horizon::Transform, horizon::Model>(ent);
+    model.init(device, "../assets/flat_vase.obj");
     transform.translation = {0, 0, 0};
 
     horizon::Controller controller{};
@@ -117,10 +71,6 @@ void App::run() {
         camera.setViewYXZ(cameraTransform.translation, cameraTransform.rotation);
 
         imguiRenderSystem.newFrame();
-
-        ImGui::Begin("test window");
-        ImGui::Text("hello!");
-        ImGui::End();
 
         // rendering
         if (auto commandBuffer = renderer.beginFrame()) {
@@ -136,6 +86,6 @@ void App::run() {
         }
     }
     device.waitIdle();
-    mesh.free();
+    model.free();
 }
 

@@ -12,6 +12,7 @@ find_package(Vulkan REQUIRED)
 add_subdirectory(deps/glfw)
 add_subdirectory(deps/glm)
 add_subdirectory(deps/imgui)
+add_subdirectory(deps/assimp)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -28,6 +29,7 @@ target_link_libraries(horizon
     glfw
     glm
     imgui
+    assimp
     ${Vulkan_LIBRARIES}
 )
 

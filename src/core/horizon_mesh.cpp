@@ -4,21 +4,22 @@
 
 namespace horizon {
 
-Mesh::Mesh(gfx::Device& deviceRef, std::vector<Vertex> *vertices, std::vector<uint32_t> *indices) {
-    init(deviceRef, vertices, indices); 
+Mesh::Mesh(gfx::Device& deviceRef, std::vector<Vertex> *vertices, std::vector<uint32_t> *indices, Material& material) {
+    init(deviceRef, vertices, indices, material); 
 }
 
 Mesh::Mesh() {
 
 }
 
-void Mesh::init(gfx::Device& deviceRef, std::vector<Vertex> *vertices, std::vector<uint32_t> *indices) {
+void Mesh::init(gfx::Device& deviceRef, std::vector<Vertex> *vertices, std::vector<uint32_t> *indices, Material& material) {
     mDevice = &deviceRef;
     if (vertices != nullptr) 
         createVertexBuffer(vertices);
     if (indices != nullptr) 
         createIndexBuffer(indices);   
-}
+    mMaterial = material;
+}   
 
 Mesh::~Mesh() {
     free();
