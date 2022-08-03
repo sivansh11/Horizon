@@ -16,7 +16,7 @@ static ImGui_ImplVulkanH_Window g_MainWindowData;
 
 class ImGuiRenderSystem {
 public:
-    ImGuiRenderSystem(Window& window, gfx::Device& device, gfx::Renderer& renderer, uint32_t imageCount);
+    ImGuiRenderSystem(Window& window, gfx::Device& device, gfx::Renderer& renderer);
     ~ImGuiRenderSystem();
 
     void newFrame();

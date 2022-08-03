@@ -9,7 +9,7 @@ static void check_vk_result(VkResult err) {
     if (err < 0) abort();
 }
 
-ImGuiRenderSystem::ImGuiRenderSystem(Window& window, gfx::Device& device, gfx::Renderer& renderer, uint32_t imageCount) : mDevice(device), mWindow(window) {
+ImGuiRenderSystem::ImGuiRenderSystem(Window& window, gfx::Device& device, gfx::Renderer& renderer) : mDevice(device), mWindow(window) {
     mDescriptorPool = gfx::DescriptorPool::Builder(device)
                         .addPoolSize(VK_DESCRIPTOR_TYPE_SAMPLER, 1000)
                         .addPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1000)
@@ -48,7 +48,7 @@ ImGuiRenderSystem::ImGuiRenderSystem(Window& window, gfx::Device& device, gfx::R
 
     initInfo.Allocator = VK_NULL_HANDLE;
     initInfo.MinImageCount = 2;
-    initInfo.ImageCount = imageCount;
+    initInfo.ImageCount = static_cast<uint32_t>(renderer.getSwapChainImageCount());
     initInfo.CheckVkResultFn = check_vk_result;
     ImGui_ImplVulkan_Init(&initInfo, renderer.getSwapChainRenderPass());
 

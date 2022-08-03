@@ -36,9 +36,7 @@ public:
     Pipeline(const Pipeline&&) = delete;
     void operator=(const Pipeline&&) = delete;
 
-    static void defaultPipelineConfigInfo(PipelineConfigInfo& configInfo, 
-                                          std::vector<VkVertexInputBindingDescription>& vertexBindingDescriptions, 
-                                          std::vector<VkVertexInputAttributeDescription>& vertexAttributeDescriptions);
+    static void defaultPipelineConfigInfo(PipelineConfigInfo& configInfo);
     void bind(VkCommandBuffer commandBuffer);
 
 private:

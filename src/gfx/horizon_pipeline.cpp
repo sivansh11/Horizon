@@ -89,9 +89,7 @@ void Pipeline::createShaderModule(const std::vector<char>& code, VkShaderModule&
     }
 }
 
-void Pipeline::defaultPipelineConfigInfo(PipelineConfigInfo& configInfo, 
-                               std::vector<VkVertexInputBindingDescription>& vertexBindingDescriptions, 
-                               std::vector<VkVertexInputAttributeDescription>& vertexAttributeDescriptions) {
+void Pipeline::defaultPipelineConfigInfo(PipelineConfigInfo& configInfo) {
     configInfo.inputAssemblyInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
     configInfo.inputAssemblyInfo.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
     configInfo.inputAssemblyInfo.primitiveRestartEnable = VK_FALSE;
@@ -160,9 +158,6 @@ void Pipeline::defaultPipelineConfigInfo(PipelineConfigInfo& configInfo,
     configInfo.dynamicStateInfo.pDynamicStates = configInfo.dynamicStateEnables.data();
     configInfo.dynamicStateInfo.dynamicStateCount = static_cast<uint32_t>(configInfo.dynamicStateEnables.size());
     configInfo.dynamicStateInfo.flags = 0;
-
-    configInfo.bindingDescriptions = vertexBindingDescriptions;
-    configInfo.attributeDescriptions = vertexAttributeDescriptions;
 }
 
 void Pipeline::bind(VkCommandBuffer commandBuffer) {

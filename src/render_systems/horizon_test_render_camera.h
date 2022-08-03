@@ -39,7 +39,9 @@ public:
         auto attributeDescription = horizon::Vertex::getAttributeDescriptions();
 
         gfx::PipelineConfigInfo pipelineConfig{};
-        gfx::Pipeline::defaultPipelineConfigInfo(pipelineConfig, bindingDescription, attributeDescription);
+        gfx::Pipeline::defaultPipelineConfigInfo(pipelineConfig);
+        pipelineConfig.attributeDescriptions = attributeDescription;
+        pipelineConfig.bindingDescriptions = bindingDescription;
         pipelineConfig.renderPass = renderPass;
         pipelineConfig.pipelineLayout = mPipelineLayout;
 
@@ -55,9 +57,7 @@ public:
     void render(VkCommandBuffer commandBuffer, VkDescriptorSet set, ecs::Scene& scene, ecs::EntityID cameraEnt) {
         mPipeline->bind(commandBuffer);
         auto camera = scene.get<horizon::Camera>(cameraEnt);
-        auto proj = camera.getProjection();
-        auto view = camera.getView();
-
+        
         vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, mPipelineLayout, 0, 1, &set, 0, nullptr);
 
         Push push;

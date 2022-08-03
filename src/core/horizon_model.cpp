@@ -72,7 +72,7 @@ std::unique_ptr<Mesh> Model::processMesh(aiMesh *mesh, const aiScene *scene, aiM
 
         vertex.color = {1, 1, 1};
 
-        vertices.push_back(vertex);
+        vertices.push_back(vertex); 
     }
 
     for (uint32_t i = 0; i < mesh->mNumFaces; i++) {
