@@ -16,7 +16,7 @@ namespace gfx
 Texture2D::Texture2D(Device& deviceRef, std::string file) : mDevice(deviceRef) {
     int channels, bytesPerPixel;
     uint8_t *data = stbi_load(file.c_str(), &mWidth, &mHeight, &bytesPerPixel, 4);
-    mMiplevels = std::floor(std::log2(std::max(mWidth, mHeight))) + 1;
+    mMiplevels = static_cast<uint32_t>(std::floor(std::log2(std::max(mWidth, mHeight)))) + 1;
     ASSERT(data, stbi_failure_reason());
     Buffer stagingBuffer(mDevice, 
                          4,
@@ -176,10 +176,10 @@ void Texture2D::generateMipMaps() {
     vkGetPhysicalDeviceFormatProperties(mDevice.getPhysicalDevice(), mImageFormat, &formatProperties);
 
     if (!(formatProperties.optimalTilingFeatures & VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT)) {
-        throw std::runtime_error("Texture image format does not support blitting!");
+        throw std::runtime_error("texture image format does not support linear blitting!");
     }
 
-    auto commandBuffer = mDevice.getSingleUseCommandBuffer();
+    VkCommandBuffer commandBuffer = mDevice.getSingleUseCommandBuffer();
 
     VkImageMemoryBarrier barrier{};
     barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -192,7 +192,7 @@ void Texture2D::generateMipMaps() {
     barrier.subresourceRange.levelCount = 1;
 
     int32_t mipWidth = mWidth;
-    int32_t mipHeight = mipHeight;
+    int32_t mipHeight = mHeight;
 
     for (uint32_t i = 1; i < mMiplevels; i++) {
         barrier.subresourceRange.baseMipLevel = i - 1;
@@ -228,8 +228,8 @@ void Texture2D::generateMipMaps() {
 
         if (mipWidth > 1) mipWidth /= 2;
         if (mipHeight > 1) mipHeight /= 2;
-
     }
+
     barrier.subresourceRange.baseMipLevel = mMiplevels - 1;
     barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
     barrier.newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
