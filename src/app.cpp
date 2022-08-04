@@ -20,12 +20,12 @@ void App::run() {
     std::unique_ptr<horizon::gfx::DescriptorPool> globalPool = horizon::gfx::DescriptorPool::Builder(device)
                                                                    .setMaxSets(horizon::gfx::SwapChain::MAX_FRAMES_IN_FLIGHT)
                                                                    .addPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, horizon::gfx::SwapChain::MAX_FRAMES_IN_FLIGHT)
-                                                                //    .addPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, horizon::gfx::SwapChain::MAX_FRAMES_IN_FLIGHT)
+                                                                   .addPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, horizon::gfx::SwapChain::MAX_FRAMES_IN_FLIGHT)
                                                                    .build();
                                                 
     std::unique_ptr<horizon::gfx::DescriptorSetLayout> globalSetLayout = horizon::gfx::DescriptorSetLayout::Builder(device)
                                                                              .addBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_ALL_GRAPHICS)
-                                                                            //  .addBinding(1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)
+                                                                             .addBinding(1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)
                                                                              .build();
 
     std::vector<std::unique_ptr<horizon::gfx::Buffer>> uboBuffers(horizon::gfx::SwapChain::MAX_FRAMES_IN_FLIGHT);
@@ -42,17 +42,17 @@ void App::run() {
 
     horizon::gfx::Texture2D tex(device, "../assets/textures/example.jpeg");
 
-    // VkDescriptorImageInfo imageInfo{};
-    // imageInfo.sampler = tex.getSampler();
-    // imageInfo.imageLayout = tex.getImageLayout();
-    // imageInfo.imageView = tex.getImageView();
+    VkDescriptorImageInfo imageInfo{};
+    imageInfo.sampler = tex.getSampler();
+    imageInfo.imageLayout = tex.getImageLayout();
+    imageInfo.imageView = tex.getImageView();
 
     std::vector<VkDescriptorSet> globalDescriptorSets(horizon::gfx::SwapChain::MAX_FRAMES_IN_FLIGHT);
     for (int i = 0; i < globalDescriptorSets.size(); i++) {
         auto bufferInfo = uboBuffers[i]->getDescriptorInfo();
         horizon::gfx::DescriptorWriter(*globalSetLayout, *globalPool)
             .writeBuffer(0, &bufferInfo)
-            // .writeImage(1, &imageInfo)
+            .writeImage(1, &imageInfo)
             .pushWrites(globalDescriptorSets[i]);
     }
 

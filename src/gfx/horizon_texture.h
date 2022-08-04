@@ -25,10 +25,12 @@ public:
 private:
     void transitionImageLayout(VkImageLayout oldImageLayout, VkImageLayout newImageLayout);
     void copyBufferToImage(Buffer& buffer, VkImage image, uint32_t width, uint32_t height, uint32_t layerCount);
+    void generateMipMaps();
 
 private:
     Device& mDevice;
     std::string filePath;
+    int mWidth, mHeight, mMiplevels;
     VkImage mImage;
     VkDeviceMemory mImageMemory;
     VkImageView mImageView;
