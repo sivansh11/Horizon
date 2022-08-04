@@ -10,6 +10,3 @@
 [submodule "deps/assimp"]
 	path = deps/assimp
 	url = https://github.com/assimp/assimp.git
-[submodule "deps/shaderc"]
-	path = deps/shaderc
-	url = https://github.com/google/shaderc.git
