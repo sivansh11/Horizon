@@ -16,12 +16,12 @@ struct PointLight {
     alignas(16) float radius;
 };
 
-struct UBO {
-    glm::mat4 PV;
-    PointLight pointLights[MAX_POINT_LIGHTS];
-    alignas(16) glm::vec3 cameraPos;
-    int numPointLights;
-};
+// struct UBO {
+//     glm::mat4 PV;
+//     PointLight pointLights[MAX_POINT_LIGHTS];
+//     alignas(16) glm::vec3 cameraPos;
+//     int numPointLights;
+// };
 
 } // namespace horizon
 

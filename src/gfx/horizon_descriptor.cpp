@@ -116,6 +116,21 @@ DescriptorWriter& DescriptorWriter::writeBuffer(uint32_t binding, VkDescriptorBu
     return *this;
 }
 
+DescriptorWriter& DescriptorWriter::writeImage(uint32_t binding, VkDescriptorImageInfo *imageInfo) {
+    ASSERT(mSetLayout.bindings.find(binding) != mSetLayout.bindings.end(), "Binding specified does not exist in the set layout");
+    auto &bindingDescription = mSetLayout.bindings[binding];
+    
+    VkWriteDescriptorSet write{};
+    write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+    write.descriptorType = bindingDescription.descriptorType;
+    write.dstBinding = binding;
+    write.pImageInfo = imageInfo;
+    write.descriptorCount = 1;
+
+    mWrites.push_back(write);
+    return *this;
+}
+
 bool DescriptorWriter::pushWrites(VkDescriptorSet &descriptor) {
     if (!mPool.allocateDescriptor(mSetLayout.mDescriptorSetLayout, descriptor)) {
         return false;

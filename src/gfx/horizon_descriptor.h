@@ -74,6 +74,7 @@ public:
     DescriptorWriter(DescriptorSetLayout &setLayout, DescriptorPool &pool);
 
     DescriptorWriter& writeBuffer(uint32_t binding, VkDescriptorBufferInfo *bufferInfo);
+    DescriptorWriter& writeImage(uint32_t binding, VkDescriptorImageInfo *imageInfo);
 
     bool pushWrites(VkDescriptorSet &descriptor);
 

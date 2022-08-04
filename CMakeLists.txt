@@ -13,6 +13,7 @@ add_subdirectory(deps/glfw)
 add_subdirectory(deps/glm)
 add_subdirectory(deps/imgui)
 add_subdirectory(deps/assimp)
+add_subdirectory(deps/stb_image)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -29,6 +30,7 @@ target_link_libraries(horizon
     glfw
     glm
     imgui
+    stb_image
     assimp
     ${Vulkan_LIBRARIES}
 )
