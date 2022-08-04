@@ -61,6 +61,7 @@ public:
 
     bool allocateDescriptor(const VkDescriptorSetLayout DescriptorSetLayout, VkDescriptorSet &descriptor);
     void freeDescriptor(VkDescriptorSet *descriptors, uint32_t size);
+    void resetPool();
 
 private:
     Device& mDevice;

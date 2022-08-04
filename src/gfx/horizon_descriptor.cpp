@@ -99,6 +99,11 @@ void DescriptorPool::freeDescriptor(VkDescriptorSet *descriptors, uint32_t size)
     vkFreeDescriptorSets(mDevice.getDevice(), mDescriptorPool, size, descriptors);
 }
 
+void DescriptorPool::resetPool() {
+    vkQueueWaitIdle(mDevice.getGraphicsQueue());
+    vkResetDescriptorPool(mDevice.getDevice(), mDescriptorPool, 0);
+}
+
 DescriptorWriter::DescriptorWriter(DescriptorSetLayout &setLayout, DescriptorPool &pool) : mSetLayout(setLayout), mPool(pool) {}
 
 DescriptorWriter& DescriptorWriter::writeBuffer(uint32_t binding, VkDescriptorBufferInfo *bufferInfo) {

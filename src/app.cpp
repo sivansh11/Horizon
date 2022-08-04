@@ -40,16 +40,13 @@ void App::run() {
         uboBuffers[i]->map();
     }
 
-    horizon::gfx::Texture2D tex(device, "../assets/textures/example.jpeg");
-
-    VkDescriptorImageInfo imageInfo{};
-    imageInfo.sampler = tex.getSampler();
-    imageInfo.imageLayout = tex.getImageLayout();
-    imageInfo.imageView = tex.getImageView();
+    horizon::gfx::Texture2D tex(device, "../assets/textures/936378.jpg");
+    horizon::gfx::Texture2D tex2(device, "../assets/textures/example.jpeg");
 
     std::vector<VkDescriptorSet> globalDescriptorSets(horizon::gfx::SwapChain::MAX_FRAMES_IN_FLIGHT);
     for (int i = 0; i < globalDescriptorSets.size(); i++) {
         auto bufferInfo = uboBuffers[i]->getDescriptorInfo();
+        auto imageInfo = tex.getDescriptorInfo();
         horizon::gfx::DescriptorWriter(*globalSetLayout, *globalPool)
             .writeBuffer(0, &bufferInfo)
             .writeImage(1, &imageInfo)
@@ -75,6 +72,28 @@ void App::run() {
 
         controller.moveInPlaneXZ(window.getGLFWwindow(), 0.01, cameraTransform.translation, cameraTransform.rotation);
         camera.setViewYXZ(cameraTransform.translation, cameraTransform.rotation);
+
+        if (glfwGetKey(window.getGLFWwindow(), GLFW_KEY_C) == GLFW_PRESS) {
+            globalPool->resetPool();
+            for (int i = 0; i < globalDescriptorSets.size(); i++) {
+                auto bufferInfo = uboBuffers[i]->getDescriptorInfo();
+                auto imageInfo = tex2.getDescriptorInfo();
+                horizon::gfx::DescriptorWriter(*globalSetLayout, *globalPool)
+                    .writeBuffer(0, &bufferInfo)
+                    .writeImage(1, &imageInfo)
+                    .pushWrites(globalDescriptorSets[i]);
+            }
+        } else {
+            globalPool->resetPool();
+            for (int i = 0; i < globalDescriptorSets.size(); i++) {
+                auto bufferInfo = uboBuffers[i]->getDescriptorInfo();
+                auto imageInfo = tex.getDescriptorInfo();
+                horizon::gfx::DescriptorWriter(*globalSetLayout, *globalPool)
+                    .writeBuffer(0, &bufferInfo)
+                    .writeImage(1, &imageInfo)
+                    .pushWrites(globalDescriptorSets[i]);
+            }
+        }
 
         // rendering
         if (auto commandBuffer = renderer.beginFrame()) {

@@ -22,6 +22,10 @@ public:
     VkFormat getImageFormat() { return mImageFormat; }
     VkImageLayout getImageLayout() { return mImageLayout; }
 
+    VkDescriptorImageInfo getDescriptorInfo() {
+        return VkDescriptorImageInfo{mSampler, mImageView, mImageLayout};
+    }
+
 private:
     void transitionImageLayout(VkImageLayout oldImageLayout, VkImageLayout newImageLayout);
     void copyBufferToImage(Buffer& buffer, VkImage image, uint32_t width, uint32_t height, uint32_t layerCount);

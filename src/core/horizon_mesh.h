@@ -3,6 +3,7 @@
 
 #include "gfx/horizon_device.h"
 #include "gfx/horizon_buffer.h"
+#include "gfx/horizon_texture.h"
 #include "core/horizon_transform.h"
 
 #include <glm/glm.hpp>
@@ -29,7 +30,7 @@ struct Vertex {
 };
 
 struct Material {
-
+    
 };
 
 class Mesh {

@@ -26,6 +26,7 @@ private:
     void processNode(aiNode *node, const aiScene *scene, aiMatrix4x4 &transform);
     std::unique_ptr<Mesh> processMesh(aiMesh *mesh, const aiScene *scene, aiMatrix4x4 &transform);
     Material processMaterial(aiMaterial *assimpMaterial);
+    std::shared_ptr<gfx::Texture2D> loadTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
 
 private:
     std::vector<std::unique_ptr<Mesh>> mMeshes;
