@@ -9,11 +9,19 @@ elseif(UNIX)
 endif()
 find_package(Vulkan REQUIRED)
 
+
 add_subdirectory(deps/glfw)
 add_subdirectory(deps/glm)
 add_subdirectory(deps/imgui)
 add_subdirectory(deps/assimp)
 add_subdirectory(deps/stb_image)
+add_subdirectory(deps/glslang)
+add_subdirectory(deps/SPIRV-Headers)
+add_subdirectory(deps/SPIRV-Tools)
+
+set(SHADERC_SKIP_TESTS ON)
+set(SHADERC_ENABLE_TESTS OFF)
+add_subdirectory(deps/shaderc)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -32,6 +40,10 @@ target_link_libraries(horizon
     imgui
     stb_image
     assimp
+    glslang
+    SPIRV-Headers
+    SPIRV-Tools
+    shaderc
     ${Vulkan_LIBRARIES}
 )
 

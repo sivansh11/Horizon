@@ -48,8 +48,8 @@ public:
         pipelineConfigInfo.pipelineLayout = mPipelineLayout;
 
         mPipeline = new gfx::Pipeline(mDevice,
-                                     "shaders/example_test_texture.vert.spv",
-                                     "shaders/example_test_texture.frag.spv",
+                                     "../shaders/example_test_texture.vert",
+                                     "../shaders/example_test_texture.frag",
                                      pipelineConfigInfo);
     }
     ~TestTextureRenderer() {

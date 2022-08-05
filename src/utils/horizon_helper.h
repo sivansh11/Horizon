@@ -15,7 +15,7 @@ enum FileType {
     BINARY
 };
 
-std::vector<char> readFile(const char *filePath, FileType type);
+std::string readFile(const char *filePath, FileType type);
 
 } // namespace utils
 

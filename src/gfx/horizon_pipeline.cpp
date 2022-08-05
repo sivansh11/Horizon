@@ -4,6 +4,8 @@
 
 #include "utils/horizon_helper.h"
 
+#include <shaderc/shaderc.hpp>
+
 namespace horizon {
 
 namespace gfx {
@@ -20,8 +22,11 @@ void Pipeline::createGraphicsPipeline(std::string& vertFilePath, std::string& fr
     ASSERT(pipelineConfig.pipelineLayout != VK_NULL_HANDLE, "Cannot create graphics pipeline: no pipelineLayout provided in pipelineConfig!");
     ASSERT(pipelineConfig.renderPass != VK_NULL_HANDLE, "Cannot create graphics pipeline: no renderPass provided in the pipelineConfig!");
 
-    std::vector<char> vertCode = utils::readFile(vertFilePath.c_str(), utils::BINARY);
-    std::vector<char> fragCode = utils::readFile(fragFilePath.c_str(), utils::BINARY);
+    // std::vector<char> vertCode = utils::readFile(vertFilePath.c_str(), utils::BINARY);
+    // std::vector<char> fragCode = utils::readFile(fragFilePath.c_str(), utils::BINARY);
+    auto vertCode = ShaderCompiler::getSpv(vertFilePath);
+    auto fragCode = ShaderCompiler::getSpv(fragFilePath);
+
 
     VkShaderModule vertShaderModule{};
     VkShaderModule fragShaderModule{};
@@ -78,11 +83,11 @@ void Pipeline::createGraphicsPipeline(std::string& vertFilePath, std::string& fr
     vkDestroyShaderModule(mDevice.getDevice(), fragShaderModule, nullptr);
 }
 
-void Pipeline::createShaderModule(const std::vector<char>& code, VkShaderModule& shaderModule) {
+void Pipeline::createShaderModule(const std::vector<uint32_t>& code, VkShaderModule& shaderModule) {
     VkShaderModuleCreateInfo shaderModuleCreateInfo{};
     shaderModuleCreateInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-    shaderModuleCreateInfo.codeSize = code.size();
-    shaderModuleCreateInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
+    shaderModuleCreateInfo.codeSize = sizeof(uint32_t) * code.size();
+    shaderModuleCreateInfo.pCode = code.data();
 
     if (vkCreateShaderModule(mDevice.getDevice(), &shaderModuleCreateInfo, nullptr, &shaderModule) != VK_SUCCESS) {
         throw std::runtime_error("Failed to create shader module!");
@@ -163,6 +168,36 @@ void Pipeline::defaultPipelineConfigInfo(PipelineConfigInfo& configInfo) {
 void Pipeline::bind(VkCommandBuffer commandBuffer) {
     vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, mGraphicsPipeline);
 }
+
+// Pipeline::ShaderCompiler Pipeline::ShaderCompiler::sShaderCompiler;
+
+Pipeline::ShaderCompiler::~ShaderCompiler() {
+
+}
+
+std::vector<uint32_t> Pipeline::ShaderCompiler::getSpv(std::string& file) {
+    std::string code = utils::readFile(file.c_str(), utils::TEXT);
+    std::string fileName = file.substr(file.find_last_of('/') + 1);
+    shaderc_shader_kind type;
+    if (file.find(".vert") != std::string::npos) type = shaderc_vertex_shader;
+    if (file.find(".frag") != std::string::npos) type = shaderc_fragment_shader;
+    if (file.find(".comp") != std::string::npos) type = shaderc_compute_shader;
+    if (file.find(".geom") != std::string::npos) type = shaderc_geometry_shader;
+
+    shaderc::Compiler compiler;
+    shaderc::CompileOptions options;
+
+    options.SetOptimizationLevel(shaderc_optimization_level_performance);
+
+    auto preprocess = compiler.PreprocessGlsl(code, type, fileName.c_str(), options);
+    code = {preprocess.cbegin(), preprocess.cend()};
+
+    auto module = compiler.CompileGlslToSpv(code, type, fileName.c_str(), options); 
+    if (module.GetCompilationStatus() != shaderc_compilation_status_success) {
+        throw std::runtime_error(module.GetErrorMessage());
+    }
+    return {module.cbegin(), module.cend()};
+} 
 
 } // namespace gfx
 

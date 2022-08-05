@@ -41,7 +41,18 @@ public:
 
 private:
     void createGraphicsPipeline(std::string& vertFilePath, std::string& fragFilePath, PipelineConfigInfo& pipelineConfig);
-    void createShaderModule(const std::vector<char>& code, VkShaderModule& shaderModule);
+    void createShaderModule(const std::vector<uint32_t>& code, VkShaderModule& shaderModule);
+
+    class ShaderCompiler {
+    public:
+        ShaderCompiler() = default;
+        ~ShaderCompiler();
+
+        static std::vector<uint32_t> getSpv(std::string& file);
+        
+    private:
+        // static ShaderCompiler sShaderCompiler;
+    };
 
 private:
     Device& mDevice;
