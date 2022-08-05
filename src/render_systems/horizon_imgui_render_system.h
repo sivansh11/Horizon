@@ -12,8 +12,6 @@
 
 namespace horizon {
 
-static ImGui_ImplVulkanH_Window g_MainWindowData;
-
 class ImGuiRenderSystem {
 public:
     ImGuiRenderSystem(Window& window, gfx::Device& device, gfx::Renderer& renderer);
@@ -30,7 +28,6 @@ private:
     gfx::Device& mDevice;
     Window& mWindow;
     std::unique_ptr<gfx::DescriptorPool> mDescriptorPool;
-    ImGui_ImplVulkanH_Window* wd = &g_MainWindowData;
 };
 
 } // namespace horizon
