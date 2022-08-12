@@ -61,7 +61,7 @@ private:
 
     bool isFrameStarted = false;
 
-    uint32_t currentImageIndex;
+    uint32_t currentImageIndex = 0;
     int currentFrameIndex = 0;
 };
 

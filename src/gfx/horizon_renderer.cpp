@@ -61,7 +61,6 @@ VkCommandBuffer Renderer::beginFrame() {
 
     VkCommandBuffer commandBuffer = getCurrentCommandBuffer();
     VkCommandBufferBeginInfo beginInfo{};
-
     beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 
     if (vkBeginCommandBuffer(commandBuffer, &beginInfo) != VK_SUCCESS) {

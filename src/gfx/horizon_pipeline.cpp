@@ -71,7 +71,7 @@ void Pipeline::createGraphicsPipeline(std::string& vertFilePath, std::string& fr
     pipelineCreateInfo.pDynamicState = &pipelineConfig.dynamicStateInfo;
     pipelineCreateInfo.layout = pipelineConfig.pipelineLayout;
     pipelineCreateInfo.renderPass = pipelineConfig.renderPass;
-    pipelineCreateInfo.subpass = 0;
+    pipelineCreateInfo.subpass = pipelineConfig.subpass;
     pipelineCreateInfo.basePipelineHandle = VK_NULL_HANDLE;
     pipelineCreateInfo.basePipelineIndex = -1;
 
