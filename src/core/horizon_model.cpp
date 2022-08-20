@@ -1,6 +1,5 @@
 #include "core/horizon_model.h"
 
-
 namespace horizon {
 
 Model::~Model() {
