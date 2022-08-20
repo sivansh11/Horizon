@@ -1,6 +1,7 @@
 #include "app.h"
 
 #include "render_systems/horizon_test_texture_renderer.h"
+#include "render_systems/horizon_imgui_render_system.h"
 #include "gfx/horizon_texture.h"
 #include "gfx/horizon_buffer.h"
 #include "gfx/horizon_descriptor.h"
@@ -54,6 +55,7 @@ void App::run() {
     }
 
     horizon::TestTextureRenderer testRenderer(device, renderer, globalSetLayout->getSetLayout());
+    horizon::ImGuiRenderSystem imguiRenderer(window, device, renderer);
 
     ecs::Scene scene;
 
@@ -95,6 +97,9 @@ void App::run() {
             }
         }
 
+        imguiRenderer.newFrame();
+        ImGui::Text("Hello!");
+        
         // rendering
         if (auto commandBuffer = renderer.beginFrame()) {
             int frameIndex = renderer.getFrameIndex();
@@ -109,6 +114,7 @@ void App::run() {
             renderer.beginSwapChainRenderPass(commandBuffer);
             
             testRenderer.render(commandBuffer, globalDescriptorSets[frameIndex], scene);
+            imguiRenderer.render(commandBuffer);
 
             renderer.endSwapChainRenderPass(commandBuffer);
             renderer.endFrame();
