@@ -31,3 +31,10 @@ If the script errors out, then open shadercompiler.py and use your location of g
 
 To run Horizon
 `cd build && ./horizon`
+
+
+## The Future
+- python scripting
+- multiple graphics backend 
+- model rigging support
+- editor
